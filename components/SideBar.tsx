@@ -16,7 +16,7 @@ const SideBar = () => {
       session && collection(db, "users", session.user?.email!, "chats")
     );
   return (
-    <div className="p-2 flex flex-col h-screen md:min-w-26px">
+    <div className="flex flex-col h-screen md:min-w-26px">
     <div className="flex-1">
             {/* New Chat */}
              < NewChat />
