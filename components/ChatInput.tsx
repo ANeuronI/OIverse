@@ -15,14 +15,14 @@ const ChatInput = ({ chatId }: Props) => {
   const [prompt, setPrompt] = useState("");
   const { data: session } = useSession();
 
-  const senddMessage = async (e: FormEvent<HTMLFormElement>) => {
+  const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!prompt) return;
+    if (!prompt.trim()) return;
 
     const input = prompt.trim();
     setPrompt("");
 
-    const message: Message = {
+    const message = {
       text: input,
       createdAt: serverTimestamp(),
       user: {
@@ -63,26 +63,40 @@ const ChatInput = ({ chatId }: Props) => {
       toast.success("Done", {
         id: notification,
       });
+    }).catch((err) => {
+      toast.error(`Error: ${err.message}`, {
+        id: notification,
+      });
     });
   };
 
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const target = e.target as HTMLTextAreaElement;
+    const target = e.target;
     target.style.height = 'auto'; // Reset the height
     target.style.height = `${target.scrollHeight}px`; // Set it to the scroll height
-    setPrompt(target.value); // Update the state with the input value
+    setPrompt(target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (prompt.trim()) {
+        sendMessage(e as unknown as FormEvent<HTMLFormElement>);
+      }
+    }
   };
 
   return (
     <div className="z-20">
       <div className="fixed bottom-5 left-[60%] transform -translate-x-1/2 w-[60vw] px-4 z-20">
         <form
-          onSubmit={senddMessage}
+          onSubmit={sendMessage}
           className="relative bg-[#2f2f2f] rounded-full flex items-center p-2"
         >
           <textarea
             value={prompt}
             onChange={handleInput}
+            onKeyDown={handleKeyDown}
             placeholder="Enter Your Prompt"
             className="bg-transparent flex-1 leading-relaxed text-white p-2 rounded-lg outline-none resize-none overflow-y-auto"
             rows={1}

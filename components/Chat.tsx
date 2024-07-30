@@ -37,3 +37,6 @@ const Chat = ({ chatId }: Props) => {
 };
 
 export default Chat;
+
+
+
