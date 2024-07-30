@@ -3,7 +3,7 @@ import Image from "next/image";
 import vercel from "@/public/assets/ollamaicon.png";
 import UserProfile from "@/components/UserProfile";
 import NewChat from "@/components/NewChat";
-import { useCallback } from "react"; // Added useCallback
+import { useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
